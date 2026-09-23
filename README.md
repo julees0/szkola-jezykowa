@@ -38,3 +38,17 @@ Baza danych posiada nałożone klucze obce (FOREIGN KEY) oraz ograniczenia unika
 
 * **Etap 1:** Konfiguracja repozytorium Git, struktura folderów, projekt i plik bazy danych, dokumentacja `README.md`.
 * **Kolejne etapy:** Obsługa rejestracji/logowania w PHP, panele użytkowników, integracja kalendarza rezerwacji i obsługa zmian statusów.
+
+## Konta testowe
+
+> **Domyślne hasło dla wszystkich kont:** `password123`
+
+* **Administrator**
+  * Admin Systemu — `admin@szkola.pl`
+
+* **Pracownicy**
+  * Jan Kowalski — `jan.kowalski@szkola.pl`
+  * Anna Nowak — `anna.nowak@szkola.pl`
+
+* **Klient**
+  * Piotr Wiśniewski — `piotr.w@gmail.com`
