@@ -1,8 +1,9 @@
 <?php
-session_start();
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/client_init.php';
 
 $komunikat = "";
+
+$next = bezpieczny_adres_next($_POST['next'] ?? $_GET['next'] ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
@@ -18,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($user && password_verify($password, $user['password'])) {
 
-                // Nieaktywne konto nie może rozpocząć sesji.
                 if ((int) $user['active'] !== 1) {
                     $komunikat = "To konto zostało zablokowane.";
                 } else {
@@ -29,8 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['surname'] = $user['surname'];
                     $_SESSION['role'] = $user['role'];
 
+                     
                     if ($user['role'] === 'admin') {
                         header("Location: admin/index.php");
+                    } elseif ($user['role'] === 'employee') {
+                        header("Location: employee/index.php");
+                    } elseif ($next !== '') {
+                        header("Location: " . $next);
                     } else {
                         header("Location: profile.php");
                     }
@@ -45,34 +50,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$tytul = 'Logowanie do systemu';
+$aktywna = 'login';
+require __DIR__ . '/../includes/client_header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Logowanie - Szkoła Językowa</title>
-</head>
-<body>
-    <div class="container">
-        <h2>Logowanie do systemu</h2>
-        
-        <?php if (!empty($komunikat)): ?>
-            <div class="alert"><?php echo htmlspecialchars($komunikat, ENT_QUOTES, 'UTF-8'); ?></div>
-        <?php endif; ?>
+<?php if (!empty($komunikat)): ?>
+    <div class="alert alert-blad"><?php echo htmlspecialchars($komunikat, ENT_QUOTES, 'UTF-8'); ?></div>
+<?php endif; ?>
 
-        <form action="login.php" method="POST">
-            <div>
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="password">Hasło:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Zaloguj się</button>
-        </form>
-        <p>Nie masz konta? <a href="register.php">Zarejestruj się</a></p>
+<?php if ($next !== '' && $_SERVER['REQUEST_METHOD'] !== 'POST'): ?>
+    <div class="alert alert-ok">Zaloguj się, aby kontynuować rezerwację.</div>
+<?php endif; ?>
+
+<form action="login.php" method="POST" class="formularz formularz-waski">
+    <input type="hidden" name="next" value="<?= h($next) ?>">
+    <label for="email">E-mail
+        <input type="email" id="email" name="email" required>
+    </label>
+    <label for="password">Hasło
+        <input type="password" id="password" name="password" required>
+    </label>
+    <div class="przyciski">
+        <button type="submit" class="btn">Zaloguj się</button>
     </div>
-</body>
-</html>
+    <p>Nie masz konta? <a href="register.php">Zarejestruj się</a></p>
+</form>
+
+<?php require __DIR__ . '/../includes/client_footer.php'; ?>
