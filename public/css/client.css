@@ -1,0 +1,185 @@
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font: inherit;
+  background-color: #fff;
+}
+
+.formularz-waski {
+  max-width: 420px;
+}
+
+.formularz .przyciski,
+.przyciski {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.podpowiedz {
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+
+.hero {
+  background-color: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 20px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  margin: 0 0 14px;
+  max-width: 640px;
+}
+
+
+.siatka {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.oferta-karta {
+  background-color: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.oferta-karta h3 {
+  margin: 0;
+  font-size: 1.0625rem;
+}
+
+.oferta-karta .opis {
+  margin: 0;
+  color: var(--gray);
+  flex: 1;
+}
+
+.oferta-karta .parametry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 0.875rem;
+}
+
+.etykieta {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background-color: #e0e7ff;
+  font-size: 0.8125rem;
+}
+
+.etykieta-szara {
+  background-color: var(--border-color);
+}
+
+.btn-wylaczony {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+.kroki {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  counter-reset: krok;
+}
+
+.kroki li {
+  counter-increment: krok;
+  padding: 6px 12px;
+  border-radius: 16px;
+  background-color: var(--border-color);
+  font-size: 0.875rem;
+}
+
+.kroki li::before {
+  content: counter(krok) ". ";
+  font-weight: 700;
+}
+
+.kroki li.zrobiony {
+  background-color: var(--status-success-bg);
+}
+
+.kroki li.aktywny {
+  background-color: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.wybor {
+  margin-bottom: 16px;
+}
+
+
+.sloty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.slot {
+  display: inline-block;
+  min-width: 72px;
+  padding: 8px 12px;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid var(--primary);
+  background-color: #fff;
+  color: var(--primary-hover);
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.15s ease;
+}
+
+a.slot:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.slot-zajety {
+  border-color: #d1d5db;
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  text-decoration: line-through;
+  font-weight: 400;
+  cursor: not-allowed;
+}
+
+.grafik {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 600px) {
+  .kroki li {
+    flex: 1 1 100%;
+  }
+
+  .slot {
+    flex: 1 1 calc(33% - 8px);
+  }
+}
