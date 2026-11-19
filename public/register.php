@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/client_init.php';
 
 $komunikat = "";
+$sukces = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -13,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($name === '' || $surname === '' || $email === '' || $phone === '' || $password === '' || $confirm_password === '') {
         $komunikat = "Wypełnij wszystkie pola!";
+    } elseif (mb_strlen($name) > 50 || mb_strlen($surname) > 50 || mb_strlen($email) > 100 || mb_strlen($phone) > 20) {
+        $komunikat = "Któreś z pól jest za długie (imię i nazwisko do 50 znaków, e-mail do 100, telefon do 20).";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $komunikat = "Niepoprawny format adresu e-mail!";
     } elseif ($password !== $confirm_password) {
@@ -27,11 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-                // Rejestracja publiczna tworzy wyłącznie konta klientów.
+                
                 $stmt = $pdo->prepare("INSERT INTO users (name, surname, email, phone, password, role, active) VALUES (?, ?, ?, ?, ?, 'client', 1)");
                 $stmt->execute([$name, $surname, $email, $phone, $hashed_password]);
 
                 $komunikat = "Rejestracja zakończona sukcesem! Możesz się teraz zalogować.";
+                $sukces = true;
             }
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -39,50 +43,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$tytul = 'Rejestracja użytkownika';
+$aktywna = 'register';
+require __DIR__ . '/../includes/client_header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Rejestracja - Szkoła Językowa</title>
-</head>
-<body>
-    <div class="container">
-        <h2>Rejestracja użytkownika</h2>
-        
-        <?php if (!empty($komunikat)): ?>
-            <div class="alert"><?php echo htmlspecialchars($komunikat, ENT_QUOTES, 'UTF-8'); ?></div>
-        <?php endif; ?>
+<?php if (!empty($komunikat)): ?>
+    <div class="alert <?= $sukces ? 'alert-ok' : 'alert-blad' ?>"><?php echo htmlspecialchars($komunikat, ENT_QUOTES, 'UTF-8'); ?></div>
+<?php endif; ?>
 
-        <form action="register.php" method="POST">
-            <div>
-                <label for="name">Imię:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div>
-                <label for="surname">Nazwisko:</label>
-                <input type="text" id="surname" name="surname" required>
-            </div>
-            <div>
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="phone">Telefon:</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div>
-                <label for="password">Hasło:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-                <label for="confirm_password">Powtórz hasło:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
-            </div>
-            <button type="submit">Zarejestruj się</button>
-        </form>
-        <p>Masz już konto? <a href="login.php">Zaloguj się</a></p>
+<form action="register.php" method="POST" class="formularz formularz-waski">
+    <label for="name">Imię
+        <input type="text" id="name" name="name" maxlength="50" required>
+    </label>
+    <label for="surname">Nazwisko
+        <input type="text" id="surname" name="surname" maxlength="50" required>
+    </label>
+    <label for="email">E-mail
+        <input type="email" id="email" name="email" maxlength="100" required>
+    </label>
+    <label for="phone">Telefon
+        <input type="tel" id="phone" name="phone" maxlength="20" required>
+    </label>
+    <label for="password">Hasło
+        <input type="password" id="password" name="password" required>
+    </label>
+    <label for="confirm_password">Powtórz hasło
+        <input type="password" id="confirm_password" name="confirm_password" required>
+    </label>
+    <div class="przyciski">
+        <button type="submit" class="btn">Zarejestruj się</button>
     </div>
-</body>
-</html>
+    <p>Masz już konto? <a href="login.php">Zaloguj się</a></p>
+</form>
+
+<?php require __DIR__ . '/../includes/client_footer.php'; ?>
