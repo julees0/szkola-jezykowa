@@ -38,7 +38,9 @@ Baza danych posiada nałożone klucze obce (FOREIGN KEY) oraz ograniczenia unika
 
 * **Etap 1:** Konfiguracja repozytorium Git, struktura folderów, projekt i plik bazy danych, dokumentacja `README.md`.
 * **Etap 2:** Moduł użytkowników, rejestracja z walidacją, logowanie z weryfikacją haseł (`password_verify`), obsługa sesji, podział na role (`client`, `employee`, `admin`), zabezpieczenie podstron przed nieuprawnionym dostępem po stronie PHP oraz edycja profilu użytkownika.
-* **Kolejne etapy:** Panel administracyjny (zarządzanie ofertą i pracownikami), integracja kalendarza rezerwacji dla klientów, wykrywanie konfliktów terminów oraz obsługa zmian statusów zajęć.
+* **Etap 3:** Panel administracyjny – dashboard, zarządzanie kategoriami, usługami i pracownikami (przypisanie usług i grafik dostępności), zarządzanie użytkownikami, przeglądanie i filtrowanie rezerwacji ze zmianą statusów.
+* **Etap 4:** Część klienta i system rezerwacji – oferta usług, proces rezerwacji (usługa → pracownik → data → godzina → potwierdzenie), uwzględnianie grafiku pracy i wykrywanie konfliktów terminów, panel klienta (własne rezerwacje, anulowanie przyszłych) oraz panel pracownika (wizyty i zmiana statusów).
+* **Kolejny etap:** Gotowy projekt i prezentacja – testy, bezpieczeństwo, responsywność, dokumentacja, obrona kodu.
 
 ## Wdrożenie i Hosting (Docker)
 
